@@ -51,16 +51,40 @@ public class DoubleLinkedList<T> {
             current = current.getNext();
         }
 
-        if (current.getNext() != null && current.getNext().getNext() != null) {
+        if (current.getPrev() != null && current.getNext() != null && current.getNext().getNext() != null) {
+            // with nodes before, after, and two after the current node
             current.getPrev().setNext(current.getNext());
             current.getNext().setPrev(current.getPrev());
             current.setNext(current.getNext().getNext());
             current.setPrev(current.getNext().getPrev());
             current.getNext().setPrev(current);
             current.getPrev().setNext(current);
-        } else {
-            
+        } else if (current.getNext() != null && current.getNext() == getTail()) {
+            // with successor node being the tail
+            current.getPrev().setNext(current.getNext());
+            current.getNext().setPrev(current.getPrev());
+            current.getNext().setNext(current);
+            current.setPrev(current.getNext());
+            current.setNext(null);
+            setTail(current);
+        } else if (current.getNext() != null && current == getHead() && current.getNext() == getTail()) {
+            // with current node being the head and successor node being the tail
+            current.setPrev(current.getNext());
+            current.getNext().setNext(current);
+            current.getNext().setPrev(null);
+            current.setNext(null);
+            setTail(current);
+            setHead(current.getPrev());
+        } else if (current.getNext() != null && current == getHead()) {
+            // with current node being the head and at least one node in between the head and the tail
+            current.setPrev(current.getNext());
+            current.setNext(current.getNext().getNext());
+            current.getNext().setPrev(current);
+            current.getPrev().setNext(current);
+            current.getPrev().setPrev(null);
+            setHead(current.getPrev());
         }
+
     }
     
 }
