@@ -105,14 +105,6 @@ public class DoubleLinkedList<T> {
             current.setPrev(current.getNext().getPrev());
             current.getNext().setPrev(current);
             current.getPrev().setNext(current);
-        } else if (current.getNext() != null && current.getNext() == getTail()) {
-            // with successor node being the tail
-            current.getPrev().setNext(current.getNext());
-            current.getNext().setPrev(current.getPrev());
-            current.getNext().setNext(current);
-            current.setPrev(current.getNext());
-            current.setNext(null);
-            setTail(current);
         } else if (current.getNext() != null && current == getHead() && current.getNext() == getTail()) {
             // with current node being the head and successor node being the tail
             current.setPrev(current.getNext());
@@ -129,8 +121,16 @@ public class DoubleLinkedList<T> {
             current.getPrev().setNext(current);
             current.getPrev().setPrev(null);
             setHead(current.getPrev());
+        } else if (current.getNext() != null && current.getNext() == getTail()) {
+            // with successor node being the tail
+            current.getPrev().setNext(current.getNext());
+            current.getNext().setPrev(current.getPrev());
+            current.getNext().setNext(current);
+            current.setPrev(current.getNext());
+            current.setNext(null);
+            setTail(current);
         }
-
+        
     }
     
 }
